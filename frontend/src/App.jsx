@@ -3,8 +3,10 @@ import { AuthProvider } from './context/AuthContext'
 import PrivateRoute from './components/PrivateRoute'
 import Register from './pages/Register'
 import Login from './pages/Login'
-import Dashboard from './pages/DashBoard'
 
+
+import Dashboard from './pages/DashBoard'
+import AllCourses from './pages/Allcourses'
 
 const App = () => {
   return (
@@ -14,6 +16,18 @@ const App = () => {
           <Route path="/" element={<Navigate to="/login" replace />} />
           <Route path="/register" element={<Register />} />
           <Route path="/login" element={<Login />} />
+
+          
+          <Route
+            path="/courses"
+            element={
+              <PrivateRoute>
+                <AllCourses />
+              </PrivateRoute>
+            }
+          />
+
+          
           <Route
             path="/dashboard"
             element={
@@ -22,6 +36,7 @@ const App = () => {
               </PrivateRoute>
             }
           />
+
           <Route path="*" element={<Navigate to="/login" replace />} />
         </Routes>
       </AuthProvider>
