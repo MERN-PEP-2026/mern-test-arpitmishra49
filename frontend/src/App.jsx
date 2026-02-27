@@ -9,8 +9,8 @@ import Login from './pages/Login'
 
 
 
-import DashbBoard from './pages/DashBoard'
-import Allcourses from './pages/Allcourses'
+import DashbBoard from './pages/DashBoard.jsx'
+import Allcourses from './pages/Allcourses.jsx'
 
 
 
