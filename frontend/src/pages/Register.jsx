@@ -1,110 +1,101 @@
-import React, { useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
-import { useAuth } from '../context/AuthContext.js';
-import API from '../api.js';
+import { useState } from 'react'
+import { Link, useNavigate } from 'react-router-dom'
+import { registerUser } from '../api/authApi'
+import { useAuth } from '../context/AuthContext'
 
 const Register = () => {
-  const [form, setForm] = useState({ name: '', email: '', password: '' });
-  const [error, setError] = useState('');
-  const [loading, setLoading] = useState(false);
+  const [form, setForm] = useState({ name: '', email: '', password: '' })
+  const [error, setError] = useState('')
+  const [loading, setLoading] = useState(false)
+  const { login } = useAuth()
+  const navigate = useNavigate()
 
-  const { login } = useAuth();
-  const navigate = useNavigate();
-
-  const handleChange = (e) => {
-    setForm({ ...form, [e.target.name]: e.target.value });
-    setError('');
-  };
+  const handleChange = (e) =>
+    setForm({ ...form, [e.target.name]: e.target.value })
 
   const handleSubmit = async (e) => {
-    e.preventDefault();
-    setLoading(true);
+    e.preventDefault()
+    setError('')
+    setLoading(true)
     try {
-      const res = await API.post('/auth/register', form);
-      login(res.data.token, res.data.student);
-      navigate('/courses');
+      const res = await registerUser(form)
+      login(res.data.student, res.data.token)
+      navigate('/dashboard')
     } catch (err) {
-      setError(err.response?.data?.message || 'Registration failed. Please try again.');
+      setError(err.response?.data?.message || 'Registration failed')
     } finally {
-      setLoading(false);
+      setLoading(false)
     }
-  };
+  }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-green-50 flex items-center justify-center px-4">
-      <div className="bg-white border border-gray-200 rounded-2xl shadow-xl p-10 w-full max-w-md">
+    <div className="min-h-screen bg-gray-50 flex items-center justify-center p-4">
+      <div className="bg-white rounded-lg shadow-md w-full max-w-sm p-8">
+        <div className="text-center mb-6">
+          <p className="text-4xl">📚</p>
+          <h2 className="text-2xl font-bold text-gray-800 mt-2">Create Account</h2>
+          <p className="text-sm text-gray-400 mt-1">Student Course Management</p>
+        </div>
 
-        {/* Logo */}
-        <h1 className="text-3xl font-bold text-blue-600 text-center mb-1">CourseMS</h1>
-        <p className="text-gray-500 text-center text-sm mb-8">Create your student account</p>
-
-        {/* Error */}
         {error && (
-          <div className="bg-red-50 border border-red-200 text-red-600 text-sm rounded-lg px-4 py-3 mb-6">
-            {error}
-          </div>
+          <p className="text-sm text-red-500 bg-red-50 px-3 py-2 rounded mb-4">{error}</p>
         )}
 
-        {/* Form */}
-        <form onSubmit={handleSubmit} className="space-y-5">
+        <form onSubmit={handleSubmit} className="space-y-4">
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-1">Full Name</label>
             <input
               name="name"
-              type="text"
-              placeholder="John Doe"
               value={form.name}
               onChange={handleChange}
+              placeholder="John Doe"
               required
-              className="w-full border border-gray-300 rounded-lg px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition"
+              className="w-full border border-gray-300 rounded px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
             />
           </div>
-
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">Email Address</label>
+            <label className="block text-sm font-medium text-gray-700 mb-1">Email</label>
             <input
               name="email"
               type="email"
-              placeholder="john@example.com"
               value={form.email}
               onChange={handleChange}
+              placeholder="john@example.com"
               required
-              className="w-full border border-gray-300 rounded-lg px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition"
+              className="w-full border border-gray-300 rounded px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
             />
           </div>
-
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-1">Password</label>
             <input
               name="password"
               type="password"
-              placeholder="Minimum 6 characters"
               value={form.password}
               onChange={handleChange}
+              placeholder="Minimum 6 characters"
               required
-              minLength={6}
-              className="w-full border border-gray-300 rounded-lg px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition"
+              className="w-full border border-gray-300 rounded px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
             />
           </div>
 
           <button
             type="submit"
             disabled={loading}
-            className="w-full bg-blue-600 hover:bg-blue-700 disabled:opacity-60 text-white font-medium py-2.5 rounded-lg transition-colors text-sm"
+            className="w-full bg-blue-600 text-white py-2 rounded text-sm font-medium hover:bg-blue-700 disabled:opacity-60"
           >
-            {loading ? 'Creating account...' : 'Create Account'}
+            {loading ? 'Creating account...' : 'Register'}
           </button>
         </form>
 
-        <p className="text-center text-sm text-gray-500 mt-6">
+        <p className="text-sm text-center text-gray-400 mt-5">
           Already have an account?{' '}
           <Link to="/login" className="text-blue-600 font-medium hover:underline">
-            Sign in
+            Login
           </Link>
         </p>
       </div>
     </div>
-  );
-};
+  )
+}
 
-export default Register;
+export default Register
