@@ -154,4 +154,4 @@ const DashBoard = () => {
   )
 }
 
-export default DashbBoard
+export default DashBoard
