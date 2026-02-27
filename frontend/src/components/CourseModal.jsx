@@ -1,16 +1,19 @@
 import { useState, useEffect } from 'react'
 
-const empty = { courseName: '', courseDescription: '', instructor: '' }
+const EMPTY_FORM = { courseName: '', courseDescription: '', instructor: '' }
 
 const CourseModal = ({ isOpen, onClose, onSubmit, editData }) => {
-  const [form, setForm] = useState(empty)
+  const [form, setForm] = useState(EMPTY_FORM)
   const [error, setError] = useState('')
   const [loading, setLoading] = useState(false)
 
-  // Fill form when editing, reset when creating
   useEffect(() => {
     if (!isOpen) return
-    setForm(editData ? { ...editData } : empty)
+    setForm(
+      editData
+        ? { courseName: editData.courseName, courseDescription: editData.courseDescription, instructor: editData.instructor }
+        : EMPTY_FORM
+    )
     setError('')
   }, [isOpen, editData])
 
@@ -37,26 +40,42 @@ const CourseModal = ({ isOpen, onClose, onSubmit, editData }) => {
   }
 
   return (
-    <div className="fixed inset-0 bg-black/40 flex items-center justify-center z-50 p-4">
-      <div className="bg-white rounded-lg shadow-xl w-full max-w-md">
+    <div
+      className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-50 p-4"
+      onClick={onClose}
+    >
+      <div
+        className="bg-white rounded-2xl shadow-2xl w-full max-w-md"
+        onClick={(e) => e.stopPropagation()}
+      >
         {/* Header */}
-        <div className="flex items-center justify-between px-6 py-4 border-b">
-          <h2 className="font-semibold text-gray-800">
-            {editData ? 'Edit Course' : 'Add New Course'}
-          </h2>
-          <button onClick={onClose} className="text-gray-400 hover:text-gray-600 text-xl">
+        <div className="flex items-center justify-between px-6 py-5 border-b border-gray-100">
+          <div>
+            <h2 className="text-lg font-bold text-gray-900">
+              {editData ? 'Edit Course' : 'Add New Course'}
+            </h2>
+            <p className="text-xs text-gray-400 mt-0.5">
+              {editData ? 'Update the course details below' : 'Fill in the details to create a course'}
+            </p>
+          </div>
+          <button
+            onClick={onClose}
+            className="w-8 h-8 flex items-center justify-center rounded-full bg-gray-100 hover:bg-gray-200 text-gray-500 text-lg transition"
+          >
             &times;
           </button>
         </div>
 
         {/* Form */}
-        <form onSubmit={handleSubmit} className="px-6 py-5 space-y-4">
+        <form onSubmit={handleSubmit} className="px-6 py-6 space-y-5">
           {error && (
-            <p className="text-sm text-red-500 bg-red-50 px-3 py-2 rounded">{error}</p>
+            <div className="flex items-center gap-2 bg-red-50 border border-red-200 text-red-600 text-sm px-4 py-3 rounded-xl">
+              ⚠️ {error}
+            </div>
           )}
 
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">
+            <label className="block text-sm font-semibold text-gray-700 mb-2">
               Course Name
             </label>
             <input
@@ -64,12 +83,12 @@ const CourseModal = ({ isOpen, onClose, onSubmit, editData }) => {
               value={form.courseName}
               onChange={handleChange}
               placeholder="e.g. Introduction to React"
-              className="w-full border border-gray-300 rounded px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="input-field"
             />
           </div>
 
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">
+            <label className="block text-sm font-semibold text-gray-700 mb-2">
               Instructor
             </label>
             <input
@@ -77,21 +96,21 @@ const CourseModal = ({ isOpen, onClose, onSubmit, editData }) => {
               value={form.instructor}
               onChange={handleChange}
               placeholder="e.g. Dr. Jane Smith"
-              className="w-full border border-gray-300 rounded px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="input-field"
             />
           </div>
 
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">
+            <label className="block text-sm font-semibold text-gray-700 mb-2">
               Description
             </label>
             <textarea
               name="courseDescription"
               value={form.courseDescription}
               onChange={handleChange}
-              placeholder="Brief description of the course..."
+              placeholder="Brief description of what this course covers..."
               rows={3}
-              className="w-full border border-gray-300 rounded px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 resize-none"
+              className="input-field resize-none"
             />
           </div>
 
@@ -99,16 +118,16 @@ const CourseModal = ({ isOpen, onClose, onSubmit, editData }) => {
             <button
               type="button"
               onClick={onClose}
-              className="flex-1 border border-gray-300 text-gray-700 text-sm py-2 rounded hover:bg-gray-50"
+              className="flex-1 border border-gray-200 text-gray-600 text-sm font-semibold py-3 rounded-xl hover:bg-gray-50 transition"
             >
               Cancel
             </button>
             <button
               type="submit"
               disabled={loading}
-              className="flex-1 bg-blue-600 text-white text-sm py-2 rounded hover:bg-blue-700 disabled:opacity-60"
+              className="flex-1 bg-blue-600 hover:bg-blue-700 text-white text-sm font-semibold py-3 rounded-xl transition disabled:opacity-60"
             >
-              {loading ? 'Saving...' : editData ? 'Update' : 'Add Course'}
+              {loading ? 'Saving...' : editData ? 'Update Course' : 'Add Course'}
             </button>
           </div>
         </form>
