@@ -46,7 +46,7 @@ const CourseViewCard = ({ course }) => {
   )
 }
 
-const AllCourses = () => {
+const Allcourses = () => {
   const [courses, setCourses] = useState([])
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState('')
@@ -139,4 +139,4 @@ const AllCourses = () => {
   )
 }
 
-export default AllCourses
+export default Allcourses

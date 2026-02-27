@@ -8,8 +8,9 @@ import Login from './pages/Login'
 
 
 
-import AllCourses from './pages/Allcourses'
+
 import DashbBoard from './pages/DashBoard'
+import Allcourses from './pages/Allcourses'
 
 
 
@@ -27,7 +28,7 @@ const App = () => {
             path="/courses"
             element={
               <PrivateRoute>
-                <AllCourses />
+                <Allcourses />
               </PrivateRoute>
             }
           />
