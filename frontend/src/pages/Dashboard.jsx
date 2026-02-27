@@ -5,7 +5,7 @@ import CourseModal from '../components/CourseModal'
 import { getCourses, createCourse, updateCourse, deleteCourse } from '../api/courseApi'
 import { useAuth } from '../context/AuthContext'
 
-const Dashboard = () => {
+const DashBoard = () => {
   const [courses, setCourses] = useState([])
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState('')
@@ -154,4 +154,4 @@ const Dashboard = () => {
   )
 }
 
-export default Dashboard
+export default DashbBoard

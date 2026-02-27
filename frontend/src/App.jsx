@@ -7,8 +7,11 @@ import Login from './pages/Login'
 
 
 
-import Dashboard from './pages/DashBoard'
+
 import AllCourses from './pages/Allcourses'
+import DashbBoard from './pages/DashBoard'
+
+
 
 const App = () => {
   return (
@@ -34,7 +37,7 @@ const App = () => {
             path="/dashboard"
             element={
               <PrivateRoute>
-                <Dashboard />
+                <DashbBoard />
               </PrivateRoute>
             }
           />
