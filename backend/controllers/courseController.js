@@ -6,7 +6,7 @@ import {
   } from '../services/courseService.js';
   
   //Gets all the courses
-  
+
   const getCourses = async (req, res) => {
     try {
       const { search } = req.query;
@@ -17,6 +17,7 @@ import {
     }
   };
   
+  // add Courses
   
   const addCourse = async (req, res) => {
     try {
